@@ -1,0 +1,6 @@
+# Separate documentation environment; do not install into the tutorial's .venv.
+--pre
+co-op-translator==0.23.0
+agent-framework-core==1.21.0
+agent-framework-openai==1.16.0
+openai==2.54.0

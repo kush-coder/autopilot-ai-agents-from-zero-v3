@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+if ! command -v gh >/dev/null 2>&1; then
+  echo "Skipping Giscus discussion sync: gh is not installed."
+  exit 0
+fi
+
+if ! gh auth status >/dev/null 2>&1; then
+  echo "Skipping Giscus discussion sync: gh is not authenticated."
+  exit 0
+fi
+
+npm run giscus:sync
+git add -- lib/plugins/giscus.js
+npm run test:giscus

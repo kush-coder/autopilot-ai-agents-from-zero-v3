@@ -1,0 +1,24 @@
+{
+  "name": "ai-agents-from-zero",
+  "version": "1.0.0",
+  "description": "AI 智能体实战速成指南：从零到企业级落地 | ai-agents-from-zero",
+  "author": "didilili <dili@outlook.com>",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write package.json \"scripts/**/*.{js,cjs,mjs}\"",
+    "format:check": "prettier --check package.json \"scripts/**/*.{js,cjs,mjs}\"",
+    "giscus:sync": "node scripts/sync-giscus-discussions.cjs",
+    "prepare": "husky",
+    "serve": "node scripts/serve-docs.cjs",
+    "test:giscus": "node scripts/giscus-plugin.test.cjs",
+    "format:md": "prettier --write \"**/*.md\"",
+    "format:md:check": "prettier --check \"**/*.md\""
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.0",
+    "@commitlint/config-conventional": "^20.4.0",
+    "docsify-cli": "^4.4.3",
+    "husky": "^9.1.7",
+    "prettier": "^3.9.10"
+  }
+}

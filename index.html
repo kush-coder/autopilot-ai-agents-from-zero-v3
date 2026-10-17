@@ -1,0 +1,856 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="《AI 智能体实战速成指南：从零到企业级落地》——技术栈全、易上手、可落地的智能体教程，含大量工程模板与企业级可部署源码；覆盖大模型基础→Coze/Dify→LangChain/LangGraph→RAG/Agent 实战→微调→大厂规范全链路"
+    />
+    <title>AI 智能体实战速成指南：从零到企业级落地 | ai-agents-from-zero</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/themes/vue.css"
+    />
+    <!-- Prism 语法高亮主题：GitHub 风格浅色（prism-themes）
+     主题列表：https://github.com/PrismJS/prism-themes
+    -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/gh/PrismJS/prism-themes@master/themes/prism-ghcolors.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css"
+    />
+    <style>
+      :root {
+        --theme-color: #00c853;
+        --sidebar-nav-link-color: #2c3e50;
+        --accent: #00c853;
+        --background: #ffffff;
+        --sidebarBackground: #ffffff;
+        --textColor: #34495e;
+        --sidebarTextColor: #364149;
+        --headingColor: #2c3e50;
+        --mutedTextColor: #777777;
+        --borderColor: rgba(0, 0, 0, 0.07);
+        --tableBorderColor: #dddddd;
+        --tableStripeColor: #f8f8f8;
+        --blockQuoteColor: #858585;
+        --highlightColor: #e96900;
+        --codeTextColor: #525252;
+        --codeBackgroundColor: #f8f8f8;
+        --codeBlockBackgroundColor: #f8f8f8;
+        --codeTypeColor: #cccccc;
+        --inputBackground: #ffffff;
+        --sidebarSublink: #505d6b;
+        --sidebarToggleBackground: hsla(0, 0%, 100%, 0.8);
+        --syntaxTextColor: #393a34;
+        --syntaxCommentColor: #999988;
+        --syntaxStringColor: #e3116c;
+        --syntaxPunctuationColor: #393a34;
+        --syntaxLiteralColor: #36acaa;
+        --syntaxKeywordColor: #00a4db;
+        --syntaxFunctionColor: #9a050f;
+        --syntaxTagColor: #00009f;
+      }
+      html,
+      body,
+      .sidebar {
+        background-color: var(--background);
+      }
+      body {
+        color: var(--textColor);
+      }
+      .progress,
+      .sidebar-toggle span {
+        background-color: var(--accent);
+      }
+      .app-nav a.active,
+      .app-nav a:hover,
+      .markdown-section a,
+      .search .search-keyword,
+      .search a:hover,
+      .sidebar ul li.active > a {
+        color: var(--accent);
+      }
+      .app-nav a.active {
+        border-bottom-color: var(--accent);
+      }
+      .anchor span,
+      .markdown-section strong {
+        color: var(--textColor);
+      }
+      .sidebar {
+        background-color: var(--sidebarBackground);
+        border-right-color: var(--borderColor);
+        color: var(--sidebarTextColor);
+      }
+      .language-switch {
+        position: fixed;
+        top: 16px;
+        right: 140px;
+        z-index: 1002;
+      }
+      .language-switch__toggle {
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-sizing: border-box;
+        width: 32px;
+        height: 32px;
+        padding: 0;
+        border: 1px solid var(--borderColor);
+        border-radius: 50%;
+        background: var(--toogleBackground, #ffffff);
+        color: #34495e;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+      }
+      .language-switch__toggle::before,
+      #docsify-darklight-theme::before {
+        content: "";
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+      }
+      .language-switch__toggle svg {
+        width: 18px;
+        height: 18px;
+        flex-shrink: 0;
+      }
+      .language-switch__toggle:hover,
+      .language-switch__toggle[aria-expanded="true"],
+      #docsify-darklight-theme:hover {
+        background-color: #f1f4f6;
+      }
+      .language-switch__menu {
+        position: absolute;
+        top: calc(100% + 8px);
+        right: 0;
+        box-sizing: border-box;
+        width: 224px;
+        max-width: calc(100vw - 32px);
+        padding: 6px;
+        border-radius: 12px;
+        background: var(--sidebarBackground);
+        color: var(--textColor);
+        box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
+      }
+      .language-switch__menu a {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        box-sizing: border-box;
+        min-height: 44px;
+        padding: 10px 12px;
+        border-radius: 6px;
+        color: var(--textColor);
+        font-size: 14px;
+        line-height: 24px;
+        text-decoration: none;
+      }
+      .language-switch__menu a:hover,
+      .language-switch a[aria-current="page"] {
+        background: var(--codeBackgroundColor);
+      }
+      .language-switch a[aria-current="page"] {
+        font-weight: 700;
+      }
+      .language-switch__check {
+        visibility: hidden;
+      }
+      .language-switch a[aria-current="page"] .language-switch__check {
+        visibility: visible;
+      }
+      .language-switch button:focus-visible,
+      .language-switch a:focus-visible {
+        outline: 2px solid var(--textColor);
+        outline-offset: 2px;
+      }
+      .language-switch__status {
+        margin: 4px 12px 8px;
+        color: var(--textColor);
+        font-size: 14px;
+        line-height: 1.6;
+      }
+      .sidebar ul li a {
+        color: var(--sidebarSublink);
+      }
+      .sidebar-toggle,
+      body.close .sidebar-toggle {
+        background-color: var(--sidebarToggleBackground);
+      }
+      .markdown-section h1,
+      .markdown-section h2,
+      .markdown-section h3,
+      .markdown-section h4 {
+        color: var(--headingColor);
+      }
+      .markdown-section .interview-question-card {
+        margin: 1rem 0 2rem;
+        padding: 1rem 1.2rem;
+        border: 1px solid var(--borderColor);
+        border-left: 4px solid var(--accent);
+        border-radius: 8px;
+        background: var(--codeBackgroundColor);
+      }
+      .markdown-section .interview-question-card__heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 0.85rem;
+      }
+      .markdown-section .interview-question-card__eyebrow {
+        color: var(--mutedTextColor);
+        font-size: 0.78rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+      }
+      .markdown-section .interview-question-card__id {
+        color: var(--accent);
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+      .markdown-section .interview-question-card__grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 0.85rem 1.5rem;
+        margin: 0;
+      }
+      .markdown-section .interview-question-card__item {
+        min-width: 0;
+      }
+      .markdown-section .interview-question-card__item dt {
+        margin-bottom: 0.3rem;
+        color: var(--mutedTextColor);
+        font-size: 0.78rem;
+        font-weight: 600;
+      }
+      .markdown-section .interview-question-card__item dd {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        margin: 0;
+      }
+      .markdown-section .interview-question-card__value {
+        color: var(--textColor);
+        font-size: 0.92rem;
+        font-weight: 600;
+      }
+      .markdown-section .interview-question-card__tag {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.18rem 0.5rem;
+        border: 1px solid var(--borderColor);
+        border-radius: 999px;
+        color: var(--textColor);
+        font-size: 0.82rem;
+        line-height: 1.35;
+      }
+      .markdown-section .interview-question-card__priority {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 1.8rem;
+        padding: 0.13rem 0.42rem;
+        border-radius: 999px;
+        background: var(--accent);
+        color: #ffffff;
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+      .markdown-section h6,
+      .markdown-section em {
+        color: var(--mutedTextColor);
+      }
+      .markdown-section blockquote {
+        border-left-color: var(--accent);
+        color: var(--blockQuoteColor);
+      }
+      .markdown-section .interview-scene-note {
+        margin: 1.2em 0;
+        padding-left: 20px;
+        border-left: 4px solid var(--accent);
+        color: var(--blockQuoteColor);
+        font-weight: 400;
+      }
+      .markdown-section .interview-scene-note p {
+        margin: 0 0 0.55rem;
+        font-weight: 400;
+        line-height: 1.6rem;
+      }
+      .markdown-section .interview-scene-note p:last-child {
+        margin-bottom: 0;
+      }
+      .markdown-section code {
+        background-color: var(--codeBackgroundColor);
+        color: var(--highlightColor);
+      }
+      .markdown-section pre {
+        background-color: var(--codeBlockBackgroundColor);
+      }
+      .markdown-section pre > code {
+        background-color: inherit;
+        color: var(--codeTextColor);
+      }
+      .markdown-section pre:after {
+        color: var(--codeTypeColor);
+      }
+      code[class*="language-"],
+      pre[class*="language-"] {
+        color: var(--syntaxTextColor);
+      }
+      pre[class*="language-"] {
+        background-color: var(--codeBlockBackgroundColor);
+        border-color: var(--tableBorderColor);
+      }
+      :not(pre) > code[class*="language-"] {
+        background-color: var(--codeBackgroundColor);
+        border-color: var(--tableBorderColor);
+      }
+      .token.comment,
+      .token.prolog,
+      .token.doctype,
+      .token.cdata {
+        color: var(--syntaxCommentColor);
+      }
+      .token.string,
+      .token.attr-value {
+        color: var(--syntaxStringColor);
+      }
+      .token.punctuation,
+      .token.operator {
+        color: var(--syntaxPunctuationColor);
+      }
+      .token.entity,
+      .token.url,
+      .token.symbol,
+      .token.number,
+      .token.boolean,
+      .token.variable,
+      .token.constant,
+      .token.property,
+      .token.regex,
+      .token.inserted {
+        color: var(--syntaxLiteralColor);
+      }
+      .token.atrule,
+      .token.keyword,
+      .token.attr-name,
+      .language-autohotkey .token.selector {
+        color: var(--syntaxKeywordColor);
+      }
+      .token.function,
+      .token.deleted,
+      .language-autohotkey .token.tag {
+        color: var(--syntaxFunctionColor);
+      }
+      .token.tag,
+      .token.selector,
+      .language-autohotkey .token.keyword {
+        color: var(--syntaxTagColor);
+      }
+      .markdown-section hr {
+        border-bottom-color: var(--borderColor);
+      }
+      .markdown-section iframe,
+      .markdown-section td,
+      .markdown-section th {
+        border-color: var(--tableBorderColor);
+      }
+      .markdown-section tr {
+        border-top-color: var(--tableBorderColor);
+      }
+      .markdown-section p.tip,
+      .markdown-section tr:nth-child(2n) {
+        background-color: var(--tableStripeColor);
+      }
+      .search {
+        border-bottom-color: var(--borderColor) !important;
+      }
+      .search input {
+        background-color: var(--inputBackground) !important;
+        border-color: var(--tableBorderColor);
+        color: var(--textColor);
+      }
+      #docsify-darklight-theme {
+        position: fixed;
+        top: 16px;
+        right: 96px;
+        z-index: 1000;
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--borderColor);
+        border-radius: 50%;
+        background-color: var(--toogleBackground, #ffffff);
+        background-image: var(--toogleImage);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 18px 18px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+        cursor: pointer;
+      }
+      #docsify-darklight-theme p {
+        visibility: hidden;
+        margin: 0;
+      }
+      .announcement-bubble {
+        position: fixed;
+        top: 64px;
+        right: 88px;
+        z-index: 1001;
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        max-width: min(600px, calc(100vw - 132px));
+        min-height: 34px;
+        padding: 0 9px 0 12px;
+        color: var(--textColor);
+        background: var(--background);
+        border: 1px solid var(--borderColor);
+        border-radius: 999px;
+        box-shadow: 0 12px 30px rgba(15, 23, 42, 0.13);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        background: color-mix(in srgb, var(--background) 94%, transparent);
+        border: 1px solid
+          color-mix(in srgb, var(--accent) 24%, var(--borderColor));
+      }
+      .announcement-bubble__content {
+        display: inline-flex;
+        min-width: 0;
+        align-items: center;
+        gap: 9px;
+        color: var(--textColor);
+        text-decoration: none;
+      }
+      .announcement-bubble__content:hover,
+      .announcement-bubble__content:focus-visible {
+        color: var(--textColor);
+        outline: none;
+      }
+      .announcement-bubble:hover,
+      .announcement-bubble:focus-visible {
+        color: var(--textColor);
+        border-color: color-mix(in srgb, var(--accent) 46%, var(--borderColor));
+        box-shadow: 0 14px 34px rgba(0, 200, 83, 0.18);
+        outline: none;
+      }
+      .announcement-bubble__dot {
+        width: 8px;
+        height: 8px;
+        flex: 0 0 auto;
+        border-radius: 50%;
+        background: var(--accent);
+        box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 14%, transparent);
+      }
+      .announcement-bubble__text {
+        overflow: hidden;
+        font-size: 13px;
+        line-height: 1.35;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+      .announcement-bubble__close {
+        display: grid;
+        width: 22px;
+        height: 22px;
+        flex: 0 0 auto;
+        place-items: center;
+        padding: 0;
+        margin-left: 2px;
+        color: var(--sidebarSublink);
+        font-size: 14px;
+        line-height: 1;
+        background: var(--codeBackgroundColor);
+        background: color-mix(
+          in srgb,
+          var(--codeBackgroundColor) 88%,
+          var(--background)
+        );
+        border: 0;
+        border-radius: 50%;
+        cursor: pointer;
+      }
+      .announcement-bubble__close:hover,
+      .announcement-bubble__close:focus-visible {
+        color: var(--headingColor);
+        background: color-mix(
+          in srgb,
+          var(--accent) 12%,
+          var(--codeBackgroundColor)
+        );
+        outline: none;
+      }
+      .app-name-link img {
+        max-width: 200px;
+      }
+      .sidebar-nav li {
+        margin: 6px 0;
+      }
+      .markdown-section img {
+        max-width: 100%;
+        height: auto;
+        max-height: 520px;
+        object-fit: contain;
+      }
+      html.mermaid-viewer-open,
+      html.mermaid-viewer-open body {
+        overflow: hidden;
+      }
+      .markdown-section .mermaid {
+        margin: 1.5em 0;
+        position: relative;
+        text-align: center;
+      }
+      .markdown-section .mermaid:not(.mermaid-viewer) {
+        overflow-x: auto;
+      }
+      .markdown-section .mermaid svg {
+        max-width: 100%;
+        height: auto;
+      }
+      .markdown-section .mermaid-viewer {
+        overflow: hidden;
+        border: 1px solid rgba(52, 73, 94, 0.14);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.72);
+      }
+      .markdown-section .mermaid-viewer__canvas {
+        overflow: hidden;
+        padding: 14px;
+        cursor: grab;
+        touch-action: none;
+      }
+      .markdown-section .mermaid-viewer.is-dragging .mermaid-viewer__canvas {
+        cursor: grabbing;
+      }
+      .markdown-section .mermaid-viewer__canvas svg {
+        display: inline-block;
+        transition: transform 0.16s ease;
+        will-change: transform;
+      }
+      .markdown-section
+        .mermaid-viewer.is-dragging
+        .mermaid-viewer__canvas
+        svg {
+        transition: none;
+      }
+      .markdown-section .mermaid-viewer__toolbar {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 2;
+        display: flex;
+        gap: 4px;
+        padding: 4px;
+        border: 1px solid rgba(52, 73, 94, 0.16);
+        border-radius: 8px;
+        background: rgba(255, 255, 255, 0.92);
+        box-shadow: 0 8px 24px rgba(31, 45, 61, 0.14);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(-4px);
+        transition:
+          opacity 0.16s ease,
+          transform 0.16s ease;
+      }
+      .markdown-section .mermaid-viewer:hover .mermaid-viewer__toolbar,
+      .markdown-section .mermaid-viewer:focus-within .mermaid-viewer__toolbar,
+      .markdown-section
+        .mermaid-viewer.is-window-fullscreen
+        .mermaid-viewer__toolbar,
+      .markdown-section
+        .mermaid-viewer.is-native-fullscreen
+        .mermaid-viewer__toolbar,
+      .markdown-section .mermaid-viewer.is-zoomed .mermaid-viewer__toolbar {
+        opacity: 1;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+      .markdown-section .mermaid-viewer__button {
+        display: grid;
+        width: 32px;
+        height: 32px;
+        place-items: center;
+        padding: 0;
+        color: #34495e;
+        background: transparent;
+        border: 0;
+        border-radius: 6px;
+        cursor: pointer;
+      }
+      .markdown-section .mermaid-viewer__button:hover,
+      .markdown-section .mermaid-viewer__button:focus-visible {
+        background: rgba(0, 200, 83, 0.1);
+        outline: none;
+      }
+      .markdown-section .mermaid-viewer__button svg {
+        width: 18px;
+        height: 18px;
+        max-width: none;
+      }
+      .markdown-section .mermaid-viewer.is-window-fullscreen,
+      .markdown-section .mermaid-viewer.is-native-fullscreen {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        flex-direction: column;
+        margin: 0;
+        border: 0;
+        border-radius: 0;
+        background: #fff;
+      }
+      .markdown-section
+        .mermaid-viewer.is-window-fullscreen
+        .mermaid-viewer__canvas,
+      .markdown-section
+        .mermaid-viewer.is-native-fullscreen
+        .mermaid-viewer__canvas {
+        display: flex;
+        flex: 1;
+        align-items: center;
+        justify-content: center;
+        min-height: 0;
+        padding: 56px 24px 24px;
+      }
+      .markdown-section
+        .mermaid-viewer.is-window-fullscreen
+        .mermaid-viewer__toolbar,
+      .markdown-section
+        .mermaid-viewer.is-native-fullscreen
+        .mermaid-viewer__toolbar {
+        top: 14px;
+        right: 14px;
+      }
+      .markdown-section
+        .mermaid-viewer.is-window-fullscreen
+        .mermaid-viewer__toolbar {
+        right: 88px;
+      }
+      .markdown-section .mermaid-viewer.is-window-fullscreen svg,
+      .markdown-section .mermaid-viewer.is-native-fullscreen svg {
+        max-width: none;
+      }
+      @media (hover: none) {
+        .markdown-section .mermaid-viewer__toolbar {
+          opacity: 1;
+          pointer-events: auto;
+          transform: translateY(0);
+        }
+      }
+      @media (max-width: 768px) {
+        .language-switch__menu {
+          position: fixed;
+          top: 56px;
+          right: 16px;
+          left: auto;
+        }
+        .announcement-bubble {
+          top: 70px;
+          right: 16px;
+          max-width: calc(100vw - 32px);
+        }
+        .markdown-section .interview-question-card__grid {
+          grid-template-columns: 1fr;
+          gap: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">加载中...</div>
+    <script>
+      (function () {
+        var isGitHubPages = /github\.io$/i.test(location.hostname);
+        function escapeHtml(value) {
+          return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#39;");
+        }
+
+        var config = {
+          name: "AI 智能体实战速成指南",
+          repo: "https://github.com/didilili/ai-agents-from-zero",
+          loadSidebar: true,
+          loadNavbar: false,
+          subMaxLevel: 4, // 侧边栏显示到四级标题 ####（2=只显示到 ##）
+          auto2top: true,
+          homepage: "README.md",
+          search: {
+            paths: "auto",
+            placeholder: "搜索文档",
+            noData: "未找到结果",
+            depth: 6,
+            maxAge: 86400000,
+            namespace: "aafz-search-v2",
+          },
+          pagination: {
+            previousText: "上一页",
+            nextText: "下一页",
+            crossChapter: true,
+            crossChapterText: true,
+          },
+          copyCode: {
+            buttonText: "复制",
+            errorText: "错误",
+            successText: "已复制",
+          },
+          count: {
+            countable: true,
+            fontsize: "0.9em",
+            color: "rgb(90,90,90)",
+            language: "chinese",
+          },
+          mermaidViewer: {
+            minScale: 0.5,
+            maxScale: 5,
+            zoomStep: 1.2,
+          },
+          announcementBubble: {
+            enabled: true,
+            text: "全宇宙最有爱的 AI Agent 交流群，二所开门等你啦！一起聊 AI、吹水唠嗑～猛击这里入群！",
+            link: "https://github.com/didilili/ai-agents-from-zero/issues/46",
+            storageKey: "aafz-announcement-v5",
+          },
+          darklightTheme: {
+            siteFont: "Source Sans Pro",
+            defaultTheme: "light",
+            codeFontFamily: "Roboto Mono, Monaco, courier, monospace",
+            bodyFontSize: "15px",
+            light: {
+              accent: "#00c853",
+              toogleBackground: "#ffffff",
+              background: "#ffffff",
+              sidebarBackground: "#ffffff",
+              textColor: "#34495e",
+              sidebarTextColor: "#364149",
+              headingColor: "#2c3e50",
+              mutedTextColor: "#777777",
+              borderColor: "rgba(0, 0, 0, 0.07)",
+              tableBorderColor: "#dddddd",
+              tableStripeColor: "#f8f8f8",
+              blockQuoteColor: "#858585",
+              highlightColor: "#e96900",
+              codeTextColor: "#525252",
+              codeBackgroundColor: "#f8f8f8",
+              codeBlockBackgroundColor: "#f8f8f8",
+              codeTypeColor: "#cccccc",
+              inputBackground: "#ffffff",
+              sidebarSublink: "#505d6b",
+              sidebarToggleBackground: "hsla(0, 0%, 100%, 0.8)",
+              syntaxTextColor: "#393a34",
+              syntaxCommentColor: "#999988",
+              syntaxStringColor: "#e3116c",
+              syntaxPunctuationColor: "#393a34",
+              syntaxLiteralColor: "#36acaa",
+              syntaxKeywordColor: "#00a4db",
+              syntaxFunctionColor: "#9a050f",
+              syntaxTagColor: "#00009f",
+              toogleImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334495e' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20.9 13.1A9 9 0 0 1 10.9 3.1 9 9 0 1 0 20.9 13.1Z'/%3E%3C/svg%3E\")",
+            },
+            dark: {
+              accent: "#00e676",
+              toogleBackground: "#ffffff",
+              background: "#0f1117",
+              sidebarBackground: "#11151d",
+              textColor: "#d5dbe5",
+              sidebarTextColor: "#d5dbe5",
+              headingColor: "#f3f7fb",
+              mutedTextColor: "#a5adba",
+              borderColor: "#2a303a",
+              tableBorderColor: "#343b46",
+              tableStripeColor: "#151a23",
+              blockQuoteColor: "#a5adba",
+              highlightColor: "#7ee787",
+              codeTextColor: "#d9e2ec",
+              codeBackgroundColor: "#171c25",
+              codeBlockBackgroundColor: "#171c25",
+              codeTypeColor: "#9aa4b2",
+              inputBackground: "#151a23",
+              sidebarSublink: "#b8c0cc",
+              sidebarToggleBackground: "rgba(15, 17, 23, 0.82)",
+              syntaxTextColor: "#d9e2ec",
+              syntaxCommentColor: "#8b949e",
+              syntaxStringColor: "#a5d6ff",
+              syntaxPunctuationColor: "#c9d1d9",
+              syntaxLiteralColor: "#79c0ff",
+              syntaxKeywordColor: "#ff7b72",
+              syntaxFunctionColor: "#d2a8ff",
+              syntaxTagColor: "#7ee787",
+              toogleImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2334495e' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='4'/%3E%3Cpath d='M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'/%3E%3C/svg%3E\")",
+            },
+          },
+          markdown: {
+            renderer: {
+              code(token, maybeLang) {
+                var text =
+                  typeof token === "string" ? token : token && token.text;
+                var lang =
+                  typeof token === "string" ? maybeLang : token && token.lang;
+
+                if (lang === "mermaid") {
+                  return '<div class="mermaid">' + escapeHtml(text) + "</div>";
+                }
+                return this.origin.code.apply(this, arguments);
+              },
+            },
+          },
+          giscus: {
+            repo: "didilili/ai-agents-from-zero",
+            repoId: "R_kgDORDu3Jw",
+            category: "Announcements",
+            categoryId: "DIC_kwDORDu3J84C13V4",
+            mapping: "title",
+            reactionsEnabled: "1",
+            strict: "0",
+            emitMetadata: "0",
+            inputPosition: "bottom",
+            theme: "preferred_color_scheme",
+            lang: "zh-CN",
+            loading: "lazy",
+          },
+          gtag: "G-D1T4ZWLSSS",
+        };
+        // 仅 GitHub Pages 需要 basePath；本地不设置，否则会请求 /undefinedREADME.md 等错误路径
+        if (isGitHubPages) config.basePath = "/ai-agents-from-zero/";
+        window.$docsify = config;
+      })();
+    </script>
+    <script src="lib/plugins/language-switch.js"></script>
+    <script src="lib/plugins/announcement-bubble.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.6/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: false });
+    </script>
+    <script src="lib/plugins/mermaid-viewer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+    <script src="lib/plugins/gtag.js"></script>
+    <!-- 确保 Python 等语言有完整语法高亮（关键字、字符串、函数等分色） -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-python.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/plugins/search.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify@4.13.1/lib/plugins/zoom-image.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-copy-code@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-katex@2.0.2/dist/docsify-katex.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-pagination@2/dist/docsify-pagination.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-count/dist/countable.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsify-darklight-theme@3.2.0/dist/index.min.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/docsify-giscus@1.0.2/dist/giscus.css"
+    />
+    <script src="lib/plugins/giscus.js"></script>
+  </body>
+</html>
